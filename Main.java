@@ -49,9 +49,11 @@ public class Main {
 
                 UserData usuario = bancoDeDados.get(idLogin);
 
-                // Verifica se está bloqueado
+                //Verificação de bloqueio
                 if (usuario.estaBloqueado()) {
-                    System.out.println("Conta bloqueada! Tente novamente após: " + usuario.getHorarioDesbloqueio());
+                    System.out.println("\n[ACESSO NEGADO]");
+                    System.out.println("Conta bloqueada por segurança.");
+                    System.out.println("Tente novamente em: " + usuario.getTempoRestante());
                     break;
                 }
 
@@ -66,14 +68,15 @@ public class Main {
                     int falhas = usuario.getTentativasFalhas();
 
                     if (falhas >= 3) {
-                        int minutos = 5 * (falhas - 2);
-                        usuario.bloquear(minutos);
+                        int minutosParaBloqueio = 5 * (falhas - 2);
+                        usuario.bloquear(minutosParaBloqueio);
                         System.out.println("\nSenha incorreta! Limite de 3 tentativas atingido.");
-                        System.out.println("Você foi bloqueado por " + minutos + " minutos.");
+                        System.out.println("Bloqueio de " + minutosParaBloqueio + " minutos aplicado.");
                     } else {
                         System.out.println("\nSenha incorreta! Tentativas: " + falhas + "/3");
                     }
                 }
+
                 break;
 
             case "3":

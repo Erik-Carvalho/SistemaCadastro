@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class UserData {
     private String nome;
@@ -17,6 +18,17 @@ public class UserData {
         return LocalDateTime.now().isBefore(horarioDesbloqueio);
     }
 
+    public String getTempoRestante() {
+        LocalDateTime agora = LocalDateTime.now();
+        long minutos = ChronoUnit.MINUTES.between(agora, horarioDesbloqueio);
+        long segundos = ChronoUnit.SECONDS.between(agora, horarioDesbloqueio) % 60;
+
+        if (minutos > 0) {
+            return minutos + " minuto(s) e " + segundos + " segundo(s).";
+        }
+        return segundos + " segundo(s).";
+    }
+
     public void registrarFalha() {
         this.tentativasFalhas++;
     }
@@ -33,5 +45,4 @@ public class UserData {
     public String getNome() { return nome; }
     public String getSenha() { return senha; }
     public int getTentativasFalhas() { return tentativasFalhas; }
-    public LocalDateTime getHorarioDesbloqueio() { return horarioDesbloqueio; }
 }
